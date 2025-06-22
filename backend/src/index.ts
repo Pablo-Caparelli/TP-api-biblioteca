@@ -1,6 +1,7 @@
 import express from "express";
 import { Schema, model } from "mongoose";
 import { connectMongodb } from "./config/mongo";
+import cors from "cors";
 
 process.loadEnvFile();
 
@@ -17,6 +18,7 @@ const bookSchema = new Schema({
 const Book = model("Book", bookSchema);
 
 const app = express();
+app.use(cors());
 
 app.get("/api/books", async (request, response): Promise<any> => {
   try {
