@@ -18,7 +18,7 @@ form {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 60%;
+  width: 50%;
 }
 
 h2 {
@@ -47,7 +47,7 @@ input[type="password"] {
 button {
   width: 100%;
   padding: 10px;
-  background: #007bff;
+  background: rgb(223, 24, 223);
   color: white;
   border: none;
   border-radius: 6px;
@@ -56,21 +56,22 @@ button {
 }
 
 button:hover {
-  background: #0056b3;
+  background: rgb(238, 78, 238);
 }
 
 #booksList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 50px;
+  gap: 100px;
   margin-top: 30px;
 }
 
 .book {
+  background-color: rgb(221, 189, 189);
   text-align: center;
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 5px 5px 20px -7px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 5px 20px -7px rgba(11, 211, 201, 0.75);
 }
 
 .book .cont-btn {
@@ -84,6 +85,14 @@ button:hover {
   background-color: rgb(4, 219, 166);
 }
 
+.book .btn-update:hover {
+  background-color: rgb(19, 145, 113);
+}
+
 .book .btn-delete {
   background-color: rgb(245, 4, 4);
+}
+
+.book .btn-delete:hover {
+  background-color: rgb(182, 39, 39);
 }

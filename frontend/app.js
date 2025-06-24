@@ -1,16 +1,121 @@
-const list = document.getElementById("booksList");
+const form = document.querySelector("form");
+const section = document.getElementById("booksList");
+const btnSubmit = document.getElementById("btn-submit");
+const tituloInput = document.getElementById("titulo");
+const autorInput = document.getElementById("autor");
+const añoInput = document.getElementById("año");
+const generoInput = document.getElementById("genero");
+const disponibleInput = document.getElementById("disponible");
+
+let isEditing = false;
+let idToEdit = null;
 
 const fetchingBooks = async () => {
-  const response = await fetch("http://localhost:1235/api/books");
-  const responseToJson = await response.json();
+  try {
+    const response = await fetch("http://localhost:1235/api/books");
+    const responseToJson = await response.json();
 
-  list.innerHTML = "";
+    section.innerHTML = "";
 
-  responseToJson.data.forEach((book) => {
-    const li = document.createElement("li");
-    li.textContent = book.titulo;
-    list.appendChild(li);
-  });
+    responseToJson.data.reverse().forEach((book) => {
+      const div = document.createElement("div");
+      div.classList.add("book");
+      div.innerHTML = `<h2>${book.titulo}</h2>
+        <p><b>Autor</b>: ${book.autor}</p>
+        <p><b>Año de publicación</b>: ${book.año}</p>
+        <p><b>Género</b>: ${book.genero}</p>
+        <p><b>Disponible</b>: ${book.disponible}</p>
+        <div class="cont-btn">
+          <button onclick="updateBook('${book._id}', '${book.titulo}', '${book.autor}', '${book.año}', '${book.genero}', '${book.disponible}')" class="btn-update">Actualizar libro</button>
+          <button onclick="deleteBook('${book._id}')" class="btn-delete">Borrar libro</button>
+        </div>
+        `;
+      section.appendChild(div);
+    });
+  } catch (error) {
+    const div = document.createElement("div");
+    div.classList.add("error");
+    div.innerHTML =
+      "<h2 style='color: red; text-align: center;'>Error al traer los libros</h2>";
+    section.insertAdjacentElement("afterend", div);
+    console.log("Error al traer los datos");
+  }
 };
+
+const addNewBook = async (e) => {
+  e.preventDefault();
+
+  try {
+    const bookData = {
+      titulo: tituloInput.value,
+      autor: autorInput.value,
+      año: Number(añoInput.value),
+      genero: generoInput.value,
+      disponible: Boolean(disponibleInput.value),
+    };
+
+    if (isEditing === false) {
+      await fetch("http://localhost:1235/api/books", {
+        method: "POST",
+        body: JSON.stringify(bookData),
+        headers: { "Content-Type": "application/json" },
+      });
+    } else {
+      await fetch("http://localhost:1235/api/books/" + idToEdit, {
+        method: "PATCH",
+        body: JSON.stringify(bookData),
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // tituloInput.value = titulo;
+    // autorInput.value = autor;
+    // añoInput.value = año;
+    // generoInput.value = genero;
+    // disponibleInput.value = disponible;
+
+    form.reset();
+
+    isEditing = false;
+    idToEdit = null;
+    btnSubmit.textContent = "Agregar libro";
+
+    await fetchingBooks();
+  } catch (error) {
+    const div = document.createElement("div");
+    div.classList.add("error");
+    div.innerHTML =
+      "<h2 style='color: red; text-align: center;'>Error al intentar agregar un libro</h2>";
+    section.insertAdjacentElement("afterend", div);
+    console.log("Error al intentar agregar un libro");
+  }
+};
+
+const deleteBook = async (id) => {
+  try {
+    if (confirm("¿Estás seguro que querés borrar este libro?")) {
+      const response = await fetch("http://localhost:1235/api/books/" + id, {
+        method: "DELETE",
+      });
+      fetchingBooks();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateBook = async (id, titulo, autor, año, genero, disponible) => {
+  isEditing = true;
+  idToEdit = id;
+  btnSubmit.textContent = "Editar libro";
+
+  tituloInput.value = titulo;
+  autorInput.value = autor;
+  añoInput.value = año;
+  generoInput.value = genero;
+  disponibleInput.value = disponible;
+};
+
+form.addEventListener("submit", addNewBook);
 
 fetchingBooks();
