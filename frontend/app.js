@@ -60,12 +60,14 @@ const addNewBook = async (e) => {
         body: JSON.stringify(bookData),
         headers: { "Content-Type": "application/json" },
       });
+      alert("📚 El Libro fue agregado con éxito");
     } else {
       await fetch("http://localhost:1235/api/books/" + idToEdit, {
         method: "PATCH",
         body: JSON.stringify(bookData),
         headers: { "Content-Type": "application/json" },
       });
+      alert("✏️ El Libro se actualizó correctamente");
     }
 
     // tituloInput.value = titulo;
@@ -97,6 +99,8 @@ const deleteBook = async (id) => {
       const response = await fetch("http://localhost:1235/api/books/" + id, {
         method: "DELETE",
       });
+      alert("🗑️ El Libro fue borrado con éxito");
+
       fetchingBooks();
     }
   } catch (error) {
