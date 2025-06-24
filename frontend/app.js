@@ -51,7 +51,7 @@ const addNewBook = async (e) => {
       autor: autorInput.value,
       año: Number(añoInput.value),
       genero: generoInput.value,
-      disponible: Boolean(disponibleInput.value),
+      disponible: disponibleInput.value,
     };
 
     if (isEditing === false) {
