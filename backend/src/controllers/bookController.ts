@@ -21,6 +21,30 @@ const getAllBooks = async (
   }
 };
 
+const getBookById = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+
+    if (!book)
+      return res.status(404).json({
+        success: false,
+        message: "Libro no encontrado",
+      });
+
+    res.json({
+      success: true,
+      data: book,
+      message: "Libro encontrado con éxito",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: (err as Error).message,
+    });
+  }
+};
+
 const addNewBook = async (req: Request, res: Response): Promise<any> => {
   try {
     const body = req.body;
@@ -85,4 +109,4 @@ const updateBook = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export { getAllBooks, addNewBook, deleteBook, updateBook };
+export { getAllBooks, getBookById, addNewBook, deleteBook, updateBook };
