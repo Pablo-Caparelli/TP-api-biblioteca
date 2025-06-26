@@ -97,6 +97,10 @@ button:hover {
   background-color: rgb(182, 39, 39);
 }
 
+.book .cont-btn .btn-getId {
+  padding: 3px;
+}
+
 #disponible {
   width: 100%;
   padding: 10px;

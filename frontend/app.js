@@ -28,6 +28,7 @@ const fetchingBooks = async () => {
         <div class="cont-btn">
           <button onclick="updateBook('${book._id}', '${book.titulo}', '${book.autor}', '${book.año}', '${book.genero}', '${book.disponible}')" class="btn-update">Actualizar libro</button>
           <button onclick="deleteBook('${book._id}')" class="btn-delete">Borrar libro</button>
+          <button onclick="getBookById('${book._id}')" class="btn-getId">Obtener libro por ID</button>
         </div>
         `;
       section.appendChild(div);
@@ -118,6 +119,48 @@ const updateBook = async (id, titulo, autor, año, genero, disponible) => {
   añoInput.value = año;
   generoInput.value = genero;
   disponibleInput.value = disponible;
+};
+
+const getBookById = async (id) => {
+  try {
+    const response = await fetch("http://localhost:1235/api/books/" + id, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    console.log("Respuesta completa:", data);
+
+    if (!response.ok || !data.success) {
+      alert("No se encontró el libro");
+      return;
+    }
+
+    const libro = data.data;
+
+    tituloInput.value = libro.titulo;
+    autorInput.value = libro.autor;
+    añoInput.value = libro.año;
+    generoInput.value = libro.genero;
+    disponibleInput.value = String(libro.disponible);
+
+    // Alert con todos los datos
+    alert(
+      `📚 Libro encontrado con éxito:\n\n` +
+        `📖 Título: ${libro.titulo}\n` +
+        `✍️ Autor: ${libro.autor}\n` +
+        `📅 Año: ${libro.año}\n` +
+        `🏷️ Género: ${libro.genero}\n` +
+        `✅ Disponible: ${libro.disponible}`
+    );
+
+    form.reset();
+
+    fetchingBooks();
+  } catch (error) {
+    console.log("Error al buscar el libro:", error.message);
+    alert("Hubo un error al buscar el libro");
+  }
 };
 
 form.addEventListener("submit", addNewBook);
