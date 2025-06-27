@@ -9,8 +9,17 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 30px;
+  padding-top: 30px;
+  padding-left: 0;
   margin: 0;
+  background: linear-gradient(
+    to right,
+    #f2f2f2,
+    rgb(236, 136, 236),
+    rgb(221, 189, 189),
+    rgba(166, 235, 231, 0.75),
+    rgb(4, 219, 166)
+  );
 }
 
 form {
@@ -70,7 +79,7 @@ button:hover {
   background-color: rgb(221, 189, 189);
   text-align: center;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 5px 5px 20px -7px rgba(11, 211, 201, 0.75);
 }
 
@@ -107,4 +116,13 @@ button:hover {
   border-radius: 6px;
   font-size: 16px;
   margin-bottom: 30px;
+}
+
+footer {
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 30px;
+  width: 100%;
+  margin-top: 20px;
 }
